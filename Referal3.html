@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Carrier Referral Campaign Newsletter</title>
+    <style>
+      /* ---------- Global Reset ---------- */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+      }
+      /* ---------- Specific Elements Reset ---------- */
+      #referralHeading,
+      #apprenticeshipHeading {
+        font-weight: normal;
+      }
+      /* ---------- Navigation Bar Styles ---------- */
+      .navigationBar {
+        width: 100%;
+        background-color: rgba(39, 50, 112, 0.1);
+        padding: 10px 20px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+        transition: max-height 0.3s ease;
+        overflow: hidden;
+      }
+      .navigationBar a {
+        color: #273270;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 0.95rem;
+        padding: 8px 0;
+      }
+      .navigationBar a:hover {
+        color: #fff;
+      }
+      /* ---------- Language Selector Styles ---------- */
+      .lang-selector {
+        font-size: 1rem;
+        color: #273270;
+        background: transparent;
+        padding: 8px 12px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        position: relative;
+      }
+      .lang-selector label {
+        font-weight: bold;
+        color: #273270;
+      }
+      .lang-selector label:hover {
+        color: #fff;
+      }
+      .lang-selector select {
+        background: #fff;
+        color: #273270;
+        border: 2px solid #273270;
+        padding: 12px 20px;
+        border-radius: 30px;
+        font-weight: bold;
+        font-size: 0.95rem;
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        cursor: pointer;
+      }
+      .lang-selector select:focus {
+        outline: none;
+        border-color: #273270;
+      }
+      .lang-selector::after {
+        content: "▼";
+        font-size: 0.8rem;
+        color: #273270;
+        position: absolute;
+        right: 18px;
+        pointer-events: none;
+      }
+      /* ---------- Logo Styles ---------- */
+      .logoWrapper {
+        width: 100%;
+        text-align: center;
+        padding: 20px 0;
+      }
+      .logoWrapper img {
+        max-width: 300px;
+      }
+      /* ---------- Mobile Navigation Toggle ---------- */
+      #navToggle {
+        display: none;
+        background: #273270;
+        color: #fff;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 30px;
+        font-weight: bold;
+        font-size: 0.95rem;
+        cursor: pointer;
+        margin: 10px auto;
+      }
+      /* ---------- Edit Mode and Save Buttons ---------- */
+      #editToggle, #saveChanges {
+        position: fixed;
+        right: 20px;
+        padding: 8px 16px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        z-index: 1000;
+      }
+      #editToggle { top: 20px; background: #273270; color: #fff; }
+      #saveChanges { top: 60px; background: #1d2557; color: #fff; }
+      /* ---------- Mailto Send Email Button (for email version) ---------- */
+      .mailtoSendEmail {
+        display: inline-block;
+        padding: 12px 20px;
+        background: #006400;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 30px;
+        font-weight: bold;
+        font-size: 0.95rem;
+        border: 2px solid #fff;
+        margin: 20px auto;
+      }
+      /* ---------- Body Background and Layout ---------- */
+      body {
+        background: linear-gradient(135deg, #0c7acc 0%, #0263f1 35%, #00d4ff 100%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+        position: relative;
+      }
+      /* ---------- Newsletter Wrapper ---------- */
+      .newsletterWrapper {
+        width: 100%;
+        max-width: 900px;
+        margin: auto;
+        padding-bottom: 300px;
+        position: relative;
+      }
+      /* ---------- Newsletter Header ---------- */
+      .newsletterHeader {
+        text-align: center;
+        margin-bottom: 50px;
+      }
+      .newsletterHeader h1 {
+        font-size: 4rem;
+        color: #fff;
+        margin-bottom: 5px;
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+      }
+      .newsletterHeader h2 {
+        font-size: 2.7rem;
+        color: #fff;
+        font-weight: normal;
+      }
+      /* ---------- Referral Container ---------- */
+      .referralContainer {
+        width: 850px;
+        margin: 0 auto 40px auto;
+      }
+      /* ---------- Image Row Styles ---------- */
+      .imageRow {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 60px;
+      }
+      .imageRow img {
+        width: 250px;
+        height: 250px;
+        object-fit: cover;
+        border: 3px solid #fff;
+        border-radius: 5%; 
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 1.5);
+        transition: transform 0.3s ease, outline 0.3s ease, box-shadow 0.3s ease;
+      }
+      .imageRow img:hover {
+        transform: scale(1.02);
+        box-shadow: 0 0 4px 3px white;
+        outline-offset: 3px;
+      }
+      /* ---------- Content Box ---------- */
+      .contentBox {
+        background: #fff;
+        border-radius: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.2);
+        margin-bottom: 40px;
+        position: relative;
+        width: 850px;
+        padding: 35px;
+      }
+      .contentBox h3 {
+        font-size: 1.6rem;
+        color: #003366;
+        margin-bottom: 10px;
+      }
+      .contentBox p {
+        font-size: 0.95rem;
+        color: #333;
+        line-height: 1.4;
+        margin-bottom: 15px;
+      }
+      /* ---------- Section Header ---------- */
+      .sectionHeader {
+        display: flex;
+        align-items: center;
+      }
+      .circleIndicator {
+        width: 25px;
+        height: 25px;
+        background: #fff;
+        border-radius: 30%;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        margin-right: 10px;
+      }
+      /* ---------- Call-to-Action Button ---------- */
+      .btn {
+        display: inline-block;
+        padding: 12px 20px;
+        background: #273270;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 30px;
+        font-weight: bold;
+        font-size: 0.95rem;
+        transition: background 0.3s ease, transform 0.3s ease;
+        border: 2px solid #fff;
+      }
+      .btn:hover {
+        background: #1d2557;
+        transform: scale(1.03);
+      }
+      /* ---------- CTA Button Wrapper ---------- */
+      .ctaWrapper {
+        position: absolute;
+        bottom: -20px;
+        right: 0;
+      }
+      /* ---------- Apprenticeship Container ---------- */
+      .apprenticeshipContainer {
+        width: 850px;
+        margin: 0 auto 40px auto;
+      }
+      .dualContent {
+        display: flex;
+        gap: 50px;
+        flex-wrap: wrap;
+        align-items: flex-start;
+      }
+      .dualContent .apprenticeshipBox {
+        flex: 1;
+        min-width: 180px;
+        max-width: 420px;
+        height: 350px;
+      }
+      .dualContent .enhancedBonusSection {
+        flex: 1;
+        min-width: 280px;
+        color: #fff;
+        text-align: left;
+        position: relative;
+        z-index: 2;
+      }
+      .enhancedBonusSection h3 {
+        font-size: 3rem;
+        line-height: 0.8;
+        margin-bottom: 10px;
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+      }
+      .enhancedBonusSection p {
+        font-size: 0.95rem;
+        line-height: 1.4;
+      }
+      .enhancedBonusSection p.bonusAmount {
+        font-size: 3rem;
+        font-weight: bold;
+        margin-bottom: 10px;
+        transition: transform 0.3s ease, color 0.3s ease;
+      }
+      .enhancedBonusSection p.bonusAmount:hover {
+        transform: scale(1.07);
+        color: #1d2557;
+      }
+      /* ---------- Decorative Corner Image ---------- */
+      .decorativeCornerImage {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        pointer-events: none;
+        z-index: -1;
+      }
+      .decorativeCornerImage img {
+        width: 500px;
+        max-width: 100%;
+        height: auto;
+        object-fit: contain;
+      }
+      @media (max-width: 600px) {
+        .imageRow img:first-child,
+        .imageRow img:last-child {
+          display: none;
+        }
+        .decorativeCornerImage {
+          bottom: -100px;
+          left: 0;
+        }
+        #navToggle {
+          display: block;
+        }
+        .navigationBar {
+          flex-direction: column;
+          align-items: center;
+          max-height: 0;
+        }
+        .navigationBar.open {
+          max-height: 300px;
+        }
+        .navigationBar a {
+          display: block;
+          padding: 10px 0;
+          width: 100%;
+          text-align: center;
+          border-bottom: 1px solid rgba(39, 50, 112, 0.1);
+        }
+        .lang-selector {
+          align-self: center;
+        }
+        .imageRow {
+          flex-direction: column;
+          align-items: center;
+        }
+        .imageRow img {
+          margin-bottom: 20px;
+        }
+        .dualContent {
+          flex-direction: column;
+        }
+        .enhancedBonusSection {
+          text-align: center;
+        }
+        .newsletterWrapper {
+          padding-bottom: 350px;
+        }
+        .referralContainer,
+        .contentBox,
+        .apprenticeshipContainer {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Edit Mode and Save Buttons (for in-browser editing) -->
+    <button id="editToggle">Enable Edit Mode</button>
+    <button id="saveChanges">Save Changes</button>
+
+    <!-- Logo Section -->
+    <div class="logoWrapper">
+      <img
+        src="https://images.carriercms.com/image/upload/w_175/v1629825291/common/logos-svg/carrier-logo.svg"
+        alt="Carrier Logo"
+      />
+    </div>
+
+    <!-- Mobile Navigation Toggle Button -->
+    <button id="navToggle">Menu</button>
+
+    <!-- Navigation Bar with Links and Language Selector -->
+    <div class="navigationBar">
+      <a href="https://example.com/hvac" data-key="navHVAC">HVAC</a>
+      <a href="https://example.com/refrigeration" data-key="navRefrigeration">Refrigeration</a>
+      <a href="https://example.com/fire-security" data-key="navFireSecurity">Fire &amp; Security</a>
+      <a href="https://example.com/financial" data-key="navFinancial">Financial Peers</a>
+      <a href="https://example.com/economic-news" data-key="navEconomicNews">Economic News</a>
+      <div class="lang-selector">
+        <label for="language">Location:</label>
+        <select id="language">
+          <option value="en" selected>England</option>
+          <option value="es">Espana</option>
+          <option value="nl">Netherlands</option>
+          <option value="fr">Français</option>
+          <option value="de">Duits</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Main Newsletter Wrapper -->
+    <div class="newsletterWrapper">
+      <!-- Header Section -->
+      <div class="newsletterHeader">
+        <h1 id="mainTitle" class="editable"></h1>
+        <h2 id="campaignSubTitle" class="editable"></h2>
+      </div>
+
+      <!-- Referral Section -->
+      <div class="referralContainer">
+        <div class="imageRow">
+          <img src="https://images.carriercms.com/image/upload/w_500,h_400,c_fill,g_center,q_auto,f_auto/v1649170787/carrier/commercial-hvac-europe/service/carrier-bluedge-service-technician-on-site_sq.jpg" id="image1" alt=""/>
+          <img src="https://images.carriercms.com/image/upload/w_500,h_400,c_fill,g_center,q_auto,f_auto/v1648732922/carrier/commercial-hvac-europe/service/carrier-bluedge-service-technician-maintenance_sq.jpg" id="image2" alt=""/>
+          <img src="https://images.carriercms.com/image/upload/v1707516173/carrier/commercial-hvac-europe/news-releases/uk/carrier-bluedge-technician.jpg" id="image3" alt=""/>
+        </div>
+        <div class="contentBox">
+          <div class="sectionHeader">
+            <div class="circleIndicator"></div>
+            <h3 id="referralHeading" class="editable"></h3>
+          </div>
+          <p id="referralParagraph" class="editable"></p>
+          <div class="ctaWrapper">
+            <a href="#" class="btn editable" id="referralCTA"></a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Apprenticeship Section -->
+      <div class="apprenticeshipContainer">
+        <div class="dualContent">
+          <div class="contentBox apprenticeshipBox">
+            <div class="sectionHeader">
+              <div class="circleIndicator"></div>
+              <h3 id="apprenticeshipHeading" class="editable"></h3>
+            </div>
+            <p id="apprenticeshipParagraph" class="editable"></p>
+            <div class="ctaWrapper">
+              <a href="#" class="btn editable" id="apprenticeshipCTA"></a>
+            </div>
+          </div>
+          <div class="enhancedBonusSection">
+            <h3 id="enhancedBonusHeading" class="editable"></h3>
+            <p class="bonusAmount editable" id="enhancedBonusAmount"></p>
+            <p id="enhancedBonusParagraph" class="editable"></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Decorative Corner Image -->
+      <div class="decorativeCornerImage">
+        <img src="https://d15k2d11r6t6rl.cloudfront.net/pub/bfra/2ey3f6mh/rb2/k0z/fsc/Remove%20background%20project.png" id="decorativeImage" alt=""/>
+      </div>
+
+      <!-- Mailto Send Email Button (for email clients like Outlook) -->
+      <div style="text-align: center;">
+        <a href="mailto:recipient@example.com?subject=Carrier%20Referral%20Campaign&body=Please%20review%20the%20newsletter%20content." class="mailtoSendEmail">
+          Send Email
+        </a>
+      </div>
+    </div>
+
+    <script>
+      // Default text content for different languages
+      const DEFAULT_TEXT_CONTENT = {
+        en: {
+          mainTitle: "Referral Campaign",
+          campaignSubTitle: "HVAC Service Technicians'",
+          imageAlt1: "Technician On Site",
+          imageAlt2: "Technician Maintenance",
+          imageAlt3: "Technician",
+          decorativeImageAlt: "Decorative Corner Image",
+          referralHeading: "Help Us Grow & Get Rewarded – Refer a Technician Today!",
+          referralParagraph: "At Carrier, we know that great talent recognizes great talent. Refer a qualified technician and earn a bonus when they join our team. It’s a win-win: help strengthen our team, enhance our service, and get rewarded.",
+          referralCTA: "Submit Your Referral",
+          apprenticeshipHeading: "Apprenticeship",
+          apprenticeshipParagraph: "Carrier is expanding its European apprenticeship programs, offering hands-on training and mentorship. Many apprentices secure remote roles, and the company aims to recognize those who go above and beyond.",
+          apprenticeshipCTA: "Submit Your Referral",
+          enhancedBonusHeading: "Enhanced Bonus Reward!",
+          enhancedBonusAmount: "Get €500",
+          enhancedBonusParagraph: "for every referral hire! We appreciate your contribution to building a stronger Carrier team.",
+          navHVAC: "HVAC",
+          navRefrigeration: "Refrigeration",
+          navFireSecurity: "Fire & Security",
+          navFinancial: "Financial Peers",
+          navEconomicNews: "Economic News"
+        },
+        // ... Define es, fr, nl, de similarly if needed.
+      };
+
+      // Load saved content or use default
+      let TEXT_CONTENT = JSON.parse(localStorage.getItem("carrierTextContent")) || DEFAULT_TEXT_CONTENT;
+      let currentLanguage = "en";
+
+      function updateLanguage(lang) {
+        currentLanguage = lang;
+        const content = TEXT_CONTENT[lang];
+        for (const key in content) {
+          const element = document.getElementById(key);
+          if (element) {
+            element.tagName === "IMG" 
+              ? (element.alt = content[key]) 
+              : (element.textContent = content[key]);
+          }
+        }
+        document.querySelectorAll('.navigationBar a').forEach(link => {
+          const dataKey = link.getAttribute('data-key');
+          if (dataKey && content[dataKey])
+            link.textContent = content[dataKey];
+        });
+        // Update alt texts for images explicitly
+        ["image1", "image2", "image3", "decorativeImage"].forEach(id => {
+          const el = document.getElementById(id);
+          if (el && content[el.id === "decorativeImage" ? "decorativeImageAlt" : "imageAlt" + id.charAt(id.length - 1)])
+            el.alt = content[el.id === "decorativeImage" ? "decorativeImageAlt" : "imageAlt" + id.charAt(id.length - 1)];
+        });
+      }
+
+      // Set language based on browser or default
+      const languageSelect = document.getElementById("language");
+      const userLang = navigator.language || navigator.userLanguage;
+      const langCode = userLang.split('-')[0];
+      if (TEXT_CONTENT[langCode]) {
+        languageSelect.value = langCode;
+        updateLanguage(langCode);
+      } else {
+        languageSelect.value = "en";
+        updateLanguage("en");
+      }
+      languageSelect.addEventListener("change", function () {
+        updateLanguage(this.value);
+      });
+
+      // Mobile navigation toggle
+      const navToggle = document.getElementById("navToggle");
+      const navigationBar = document.querySelector(".navigationBar");
+      navToggle.addEventListener("click", function () {
+        navigationBar.classList.toggle("open");
+      });
+
+      // Password protection for edit mode
+      const editToggle = document.getElementById("editToggle");
+      const saveButton = document.getElementById("saveChanges");
+      let isEditable = false;
+      const bossPassword = "myBossPassword"; // Change this as needed
+
+      editToggle.addEventListener("click", function () {
+        if (!isEditable) {
+          const pwd = prompt("Enter password to enable editing:");
+          if (pwd !== bossPassword) {
+            alert("Incorrect password!");
+            return;
+          }
+        }
+        isEditable = !isEditable;
+        document.querySelectorAll('.editable').forEach(elem => {
+          elem.contentEditable = isEditable;
+          elem.style.border = isEditable ? "1px dashed #ccc" : "none";
+        });
+        editToggle.textContent = isEditable ? "Disable Edit Mode" : "Enable Edit Mode";
+      });
+
+      // Save changes button – update TEXT_CONTENT and store in localStorage
+      saveButton.addEventListener("click", function () {
+        document.querySelectorAll('.editable').forEach(elem => {
+          const key = elem.id;
+          if (key && TEXT_CONTENT[currentLanguage][key] !== undefined) {
+            TEXT_CONTENT[currentLanguage][key] = elem.textContent;
+          }
+        });
+        localStorage.setItem("carrierTextContent", JSON.stringify(TEXT_CONTENT));
+        alert("Changes saved!");
+      });
+
+      // Update TEXT_CONTENT when an element loses focus
+      document.querySelectorAll('.editable').forEach(elem => {
+        elem.addEventListener("blur", function () {
+          const key = this.id;
+          if (key && TEXT_CONTENT[currentLanguage][key] !== undefined) {
+            TEXT_CONTENT[currentLanguage][key] = this.textContent;
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
